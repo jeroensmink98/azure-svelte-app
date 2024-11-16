@@ -30,6 +30,14 @@ jobs:
       run: pnpm install
       working-directory: ${{ env.app }}
 
+    - name: Check application
+      run: pnpm check
+      working-directory: ${{ env.app }}
+
+    - name: Audit application
+      run: pnpm audit
+      working-directory: ${{ env.app }}
+
     - name: Build application
       run: pnpm build
       working-directory: ${{ env.app }}
