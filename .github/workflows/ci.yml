@@ -20,5 +20,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
+
     - name: Install dependencies
       run: pnpm install
+      working-directory: ${{ env.app }}
+
+    - name: Build application
+      run: pnpm build
+      working-directory: ${{ env.app }}
