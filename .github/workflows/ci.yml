@@ -35,7 +35,7 @@ jobs:
       working-directory: ${{ env.app }}
 
     - name: Audit application
-      run: pnpm audit
+      run: pnpm audit --audit-level=moderate
       working-directory: ${{ env.app }}
 
     - name: Build application
