@@ -12,34 +12,40 @@ jobs:
       matrix:
         node-version: [20]
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: 9
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        cache-dependency-path: ${{ env.app }}/pnpm-lock.yaml
-        node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          cache-dependency-path: ${{ env.app }}/pnpm-lock.yaml
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
 
-    - name: Install dependencies
-      run: pnpm install
-      working-directory: ${{ env.app }}
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: ${{ env.app }}
 
-    - name: Check application
-      run: pnpm check
-      working-directory: ${{ env.app }}
+      - name: Check application
+        run: pnpm check
+        working-directory: ${{ env.app }}
 
-    - name: Audit application
-      run: pnpm audit --audit-level=moderate
-      working-directory: ${{ env.app }}
+      - name: Audit application
+        run: pnpm audit
+        working-directory: ${{ env.app }}
 
-    - name: Build application
-      run: pnpm build
-      working-directory: ${{ env.app }}
+      - name: Build application
+        run: pnpm build
+        working-directory: ${{ env.app }}
 
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: news-app
+          path: |
+            ${{ env.app }}/build
 
