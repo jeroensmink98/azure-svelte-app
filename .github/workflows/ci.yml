@@ -1,7 +1,9 @@
 name: Sveltekit News Application
+
 on: [push]
+
 env:
-  app: ./news-app
+  app: ./news-app # Path to your Svelte app
 
 jobs:
   build:
@@ -22,8 +24,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
-        working-directory: ${{ env.app }}
-     
 
     - name: Install dependencies
       run: pnpm install
