@@ -3,7 +3,8 @@ name: Sveltekit News Application
 on: [push]
 
 env:
-  app: ./news-app # Path to your Svelte app
+  app: ./news-app
+  AZURE_WEBAPP_NAME:  news-app-914
 
 jobs:
   build:
@@ -48,4 +49,26 @@ jobs:
           name: news-app
           path: |
             ${{ env.app }}/build
+
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: news-app
+          path: build
+
+      - name: 'Deploy to Azure WebApp'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: build
 
